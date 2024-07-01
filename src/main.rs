@@ -1,6 +1,10 @@
-use axum::Router;
+mod routes;
+mod utils;
+
+use axum::{routing::get, Router};
 use dotenv::dotenv;
 use log::info;
+use routes::index::get_index;
 use tokio;
 
 #[tokio::main]
@@ -18,7 +22,7 @@ async fn main() {
     let listener = tokio::net::TcpListener::bind(full_address.as_str())
         .await
         .unwrap();
-    let app = Router::new();
+    let app = Router::new().route("/", get(get_index));
 
     info!("Server running at http://{}", full_address);
 
