@@ -9,15 +9,11 @@ pub struct IndexParams {
 }
 
 pub async fn get_index(query: Query<IndexParams>) -> impl IntoResponse {
-    if query.options.is_none() {
-        return "No options provided".into_response();
-    }
-
     let picked = pick_random(
         &query
             .options
             .as_ref()
-            .unwrap()
+            .unwrap_or(&String::from("No options provided"))
             .split(',')
             .collect::<Vec<&str>>(),
     )
