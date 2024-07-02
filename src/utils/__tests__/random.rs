@@ -1,6 +1,6 @@
 #[cfg(test)]
 mod tests {
-    use super::*;
+    use crate::utils::random::pick_random;
 
     #[test]
     fn test_random() {
