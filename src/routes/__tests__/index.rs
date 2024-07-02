@@ -10,11 +10,11 @@ mod tests {
     use http_body_util::BodyExt;
     use tower::ServiceExt;
 
-    use crate::routes::index::get_index;
+    use crate::routes::index;
 
     #[tokio::test]
     async fn should_not_panic_without_options() {
-        let app: Router = Router::new().route("/", get(get_index));
+        let app: Router = Router::new().route("/", get(index::get));
         let response = app
             .oneshot(Request::builder().uri("/").body(Body::empty()).unwrap())
             .await
@@ -32,7 +32,7 @@ mod tests {
             "some_random_option4",
             "some_random_option5",
         ];
-        let app: Router = Router::new().route("/", get(get_index));
+        let app: Router = Router::new().route("/", get(index::get));
         let response = app
             .oneshot(
                 Request::builder()

@@ -12,7 +12,7 @@ pub struct IndexParams {
     options: Option<String>,
 }
 
-pub async fn get_index(query: Query<IndexParams>) -> impl IntoResponse {
+pub async fn get(query: Query<IndexParams>) -> impl IntoResponse {
     let mut headers = HeaderMap::new();
 
     headers.insert("Content-Type", "text/html".parse().unwrap());
