@@ -1,7 +1,11 @@
-use axum::{extract::Query, response::IntoResponse};
+use axum::{
+    extract::Query,
+    http::{HeaderMap, StatusCode},
+    response::IntoResponse,
+};
 use serde::Deserialize;
 
-use crate::utils::random::pick_random;
+use crate::{pages::index::render_index_page, utils::random::pick_random};
 
 #[derive(Deserialize)]
 pub struct IndexParams {
@@ -9,6 +13,10 @@ pub struct IndexParams {
 }
 
 pub async fn get_index(query: Query<IndexParams>) -> impl IntoResponse {
+    let mut headers = HeaderMap::new();
+
+    headers.insert("Content-Type", "text/html".parse().unwrap());
+
     let picked = pick_random(
         &query
             .options
@@ -19,5 +27,5 @@ pub async fn get_index(query: Query<IndexParams>) -> impl IntoResponse {
     )
     .to_string();
 
-    picked.into_response()
+    (StatusCode::OK, headers, render_index_page(picked))
 }

@@ -1,3 +1,4 @@
+mod pages;
 mod routes;
 mod utils;
 
