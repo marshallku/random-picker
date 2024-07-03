@@ -5,6 +5,7 @@ edition = "2021"
 
 [dependencies]
 axum = { version = "0.7.5", features = ["multipart"] }
+base64 = "0.22.1"
 dotenv = "0.15.0"
 env_logger = "0.11.3"
 http-body-util = "0.1.2"
