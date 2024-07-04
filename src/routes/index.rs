@@ -4,15 +4,22 @@ use axum::{
     response::IntoResponse,
 };
 use serde::Deserialize;
+use tracing::info;
 
-use crate::{pages::index::render_index_page, utils::random::pick_random};
+use crate::{
+    pages::index::render_index_page,
+    utils::{extract::ExtractFullOrigin, random::pick_random},
+};
 
 #[derive(Deserialize)]
 pub struct IndexParams {
     options: Option<String>,
 }
 
-pub async fn get(query: Query<IndexParams>) -> impl IntoResponse {
+pub async fn get(
+    query: Query<IndexParams>,
+    ExtractFullOrigin(full_origin): ExtractFullOrigin,
+) -> impl IntoResponse {
     let mut headers = HeaderMap::new();
 
     headers.insert("Content-Type", "text/html".parse().unwrap());
@@ -27,5 +34,11 @@ pub async fn get(query: Query<IndexParams>) -> impl IntoResponse {
     )
     .to_string();
 
-    (StatusCode::OK, headers, render_index_page(picked))
+    info!("Host: {:?}", full_origin);
+
+    (
+        StatusCode::OK,
+        headers,
+        render_index_page(picked, full_origin),
+    )
 }

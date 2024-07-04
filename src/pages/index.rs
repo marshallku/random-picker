@@ -1,5 +1,6 @@
 use base64::{engine::general_purpose::STANDARD, Engine};
 
+#[allow(dead_code)]
 fn generate_preview_image(selected_option: String) -> String {
     format!(
         "data:image/svg+xml;base64,{}",
@@ -15,7 +16,7 @@ fn generate_preview_image(selected_option: String) -> String {
     )
 }
 
-pub fn render_index_page(selected_option: String) -> String {
+pub fn render_index_page(selected_option: String, host: String) -> String {
     format!(
         r#"
         <!DOCTYPE html>
@@ -24,8 +25,13 @@ pub fn render_index_page(selected_option: String) -> String {
             <meta charset="UTF-8">
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
             <title>{}</title>
+            <meta property="description" content="Random Picker" />
+            <meta property="og:site_name" content="Random Picker" />
+            <meta property="og:type" content="website" />
             <meta property="og:title" content="{}" />
-            <meta property="og:image" content="{}" />
+            <meta property="og:description" content="Random Picker" />
+            <meta property="og:image" content="{}/image?text={}" />
+            <meta property="og:url" content="{}" />
         </head>
         <body>
             <h1>Random Picker</h1>
@@ -33,9 +39,6 @@ pub fn render_index_page(selected_option: String) -> String {
         </body>
         </html>
     "#,
-        selected_option,
-        selected_option,
-        generate_preview_image(selected_option.clone()),
-        selected_option
+        selected_option, selected_option, host, selected_option, host, selected_option
     )
 }
